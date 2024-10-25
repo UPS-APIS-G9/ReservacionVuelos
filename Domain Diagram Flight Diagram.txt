@@ -1,0 +1,40 @@
+@startuml
+
+class Passenger {
+  + String id
+  + String documentType
+  + String countryOfIssue
+  + String firstName
+  + String lastName
+  + String email
+}
+
+class Reservation {
+  + String reservationCode
+  + Passenger passenger
+  + Flight flight
+  + String serviceClass
+}
+
+class Flight {
+  + String flightNumber
+  + String scope
+  + String origin
+  + String destination
+  + DateTime departureDateTime
+  + List<Seat> seats
+}
+
+class Seat {
+  + String seatCode
+  + String row
+  + String column
+  + String class
+  + boolean isReserved
+}
+
+Passenger "1" -- "0..*" Reservation
+Reservation "1" -- "0..*" Flight
+Flight "1" -- "0..*" Seat
+
+@enduml
