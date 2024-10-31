@@ -54,6 +54,11 @@
                 return reservacion;
             }
         }
+
+        public override string ToString()
+        {
+            return $"{CodigoReserva}|{Pasajero.NumeroIdentificacion}|{Pasajero.TipoIdentificacion}|{Pasajero.PaisEmision}|{Pasajero.Nombres}|{Pasajero.Apellidos}|{Pasajero.Correo}|{AsientoSeleccionado.Categoria}|{Vuelo.NumeroVuelo}|{Vuelo.Alcance}|{Vuelo.AeropuertoOrigen}|{Vuelo.AeropuertoDestino}|{Vuelo.FechaHoraVuelo}";
+        }
     }
 
 }

@@ -1,5 +1,6 @@
-﻿using ReservacionVuelos.Entities;
-using ReservacionVuelos.Enums;
+﻿using ReservacionVuelos.DTOs;
+using ReservacionVuelos.Entities;
+using ReservacionVuelos.Handlers;
 using ReservacionVuelos.Services;
 
 try
@@ -7,40 +8,80 @@ try
     LeerArchivo.Instance.InitializeFileReservations("Files/reservations.txt");
     LeerArchivo.Instance.InitializeFileSeatSelection("Files/seat-selection.txt");
 
-    // Obtener el contenido del archivo
     List<string> contenidoReservaciones = LeerArchivo.Instance.GetcontenidoReservaciones();
     List<string> contenidoSeleccionAsientos = LeerArchivo.Instance.GetcontenidoSeleccionAsiento();
 
+    List<Reservacion> reservaciones = new();
+    ReservacionService reservacionService = new();
 
-    foreach (var reservacion in contenidoReservaciones)
+    foreach (var lineaReservacion in contenidoReservaciones)
     {
-        var reservacionDividida = reservacion.Split("|");
+        var reservacionDividida = new ReservacionInfo(lineaReservacion);
 
-        Pasajero pasajero = new Pasajero.PasajeroBuilder()
-            .SetNombres(reservacionDividida[4].ToString())
-            .SetApellidos(reservacionDividida[5].ToString())
-            .SetPaisEmision(reservacionDividida[3].ToString())
-            .SetCorreo(reservacionDividida[6].ToString())
-            .SetNumeroIdentificacion(reservacionDividida[1].ToString())
-            .SetTipoIdentificacion(reservacionDividida[2].ToString().Equals("PAS") ? TipoIdentificacion.PAS : TipoIdentificacion.NAC)
+        Pasajero pasajero = reservacionService.CrearPasajero(reservacionDividida);
+        Vuelo vuelo = reservacionService.CrearVuelo(reservacionDividida);
+        Asiento asiento = reservacionService.CrearAsiento(reservacionDividida);
+
+        Reservacion reservacion = new Reservacion.ReservacionBuilder()
+            .SetCodigoReserva(reservacionDividida.CodigoReserva)
+            .SetAsientoSeleccionado(asiento)
+            .SetVuelo(vuelo)
+            .SetPasajero(pasajero)
             .Build();
 
-        Vuelo vuelo = new Vuelo.VueloBuilder()
-            .SetNumeroVuelo(reservacionDividida[4].ToString())
-            .Build();
+        reservaciones.Add(reservacion);
     }
 
+    foreach (var codigoReserva in contenidoSeleccionAsientos)
+    {
+        var codigoReservaDividido = new AsientoReservaInfo(codigoReserva);
 
-    Asiento asiento = new Asiento.AsientoBuilder()
-        .SetFila("8")
-        .SetColumna("A")
-        .SetCategoria("P")
-        .Build();
+        var reservacion = reservaciones.FirstOrDefault(reserva => reserva.CodigoReserva == codigoReservaDividido.CodigoReserva);
 
-    
-    Console.WriteLine(contenidoSeleccionAsientos);
+        if (reservacion != null && reservacion.AsientoSeleccionado != null)
+        {
+            Asiento asientoActualizado = reservacionService.ActualizarAsiento(reservacion, true);
+
+            Reservacion reservacionActualizada = new Reservacion.ReservacionBuilder()
+                .SetCodigoReserva(reservacion.CodigoReserva)
+                .SetPasajero(reservacion.Pasajero)
+                .SetVuelo(reservacion.Vuelo)
+                .SetAsientoSeleccionado(asientoActualizado)
+                .Build();
+
+            reservaciones.Remove(reservacion);
+            reservaciones.Add(reservacionActualizada);
+        }
+    }
+
+    Console.WriteLine("Ingrese su email:");
+    string email = Console.ReadLine();
+
+    var context = new ReservaContext
+    {
+        Email = email??"",
+        Reservaciones = reservaciones
+    };
+
+    // Crear y encadenar los handlers
+    var emailHandler = new CorreoHandler();
+    var mostrarReservasHandler = new MostrarReservasHandler();
+    var seleccionAsientoHandler = new SeleccionAsientoHandler();
+    var validacionFechaHoraHandler = new ValidacionFechaHoraHandler();
+    var guardarSeleccionHandler = new GuardarSeleccionHandler();
+
+    emailHandler.SetNext(mostrarReservasHandler);
+    mostrarReservasHandler.SetNext(seleccionAsientoHandler);
+    seleccionAsientoHandler.SetNext(validacionFechaHoraHandler);
+    validacionFechaHoraHandler.SetNext(guardarSeleccionHandler);
+
+    emailHandler.Handle(context);
+    Console.WriteLine("Proceso completado exitosamente.");
+
 }
 catch (Exception ex)
 {
     Console.WriteLine($"Error: {ex.Message}");
 }
+
+

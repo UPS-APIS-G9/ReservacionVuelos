@@ -2,8 +2,8 @@
 {
     public class Asiento
     {
-        public string Fila { get; private set; }
-        public string Columna { get; private set; }
+        public string CodigoReserva { get; private set; }
+        public string CodigoAsiento { get; private set; }
         public string Categoria { get; private set; }
         public bool Reservado { get; private set; } = false;
 
@@ -18,15 +18,15 @@
                 asiento = new Asiento();
             }
 
-            public AsientoBuilder SetFila(string fila)
+            public AsientoBuilder SetCodigoReserva(string codigoReserva)
             {
-                asiento.Fila = fila;
+                asiento.CodigoReserva = codigoReserva;
                 return this;
             }
 
-            public AsientoBuilder SetColumna(string columna)
+            public AsientoBuilder SetCodigoAsiento(string codigoAsiento)
             {
-                asiento.Columna = columna;
+                asiento.CodigoAsiento = codigoAsiento;
                 return this;
             }
 
