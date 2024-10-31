@@ -16,14 +16,14 @@ try
 
     foreach (var lineaReservacion in contenidoReservaciones)
     {
-        var reservacionDividida = new ReservacionInfo(lineaReservacion);
+        var reservacionInfo = new ReservacionInfo(lineaReservacion);
 
-        Pasajero pasajero = reservacionService.CrearPasajero(reservacionDividida);
-        Vuelo vuelo = reservacionService.CrearVuelo(reservacionDividida);
-        Asiento asiento = reservacionService.CrearAsiento(reservacionDividida);
+        Pasajero pasajero = reservacionService.CrearPasajero(reservacionInfo);
+        Vuelo vuelo = reservacionService.CrearVuelo(reservacionInfo);
+        Asiento asiento = reservacionService.CrearAsiento(reservacionInfo);
 
         Reservacion reservacion = new Reservacion.ReservacionBuilder()
-            .SetCodigoReserva(reservacionDividida.CodigoReserva)
+            .SetCodigoReserva(reservacionInfo.CodigoReserva)
             .SetAsientoSeleccionado(asiento)
             .SetVuelo(vuelo)
             .SetPasajero(pasajero)
@@ -34,9 +34,9 @@ try
 
     foreach (var codigoReserva in contenidoSeleccionAsientos)
     {
-        var codigoReservaDividido = new AsientoReservaInfo(codigoReserva);
+        var asientoReservaInfo = new AsientoReservaInfo(codigoReserva);
 
-        var reservacion = reservaciones.FirstOrDefault(reserva => reserva.CodigoReserva == codigoReservaDividido.CodigoReserva);
+        var reservacion = reservaciones.FirstOrDefault(reserva => reserva.CodigoReserva == asientoReservaInfo.CodigoReserva);
 
         if (reservacion != null && reservacion.AsientoSeleccionado != null)
         {
@@ -54,8 +54,8 @@ try
         }
     }
 
-    Console.WriteLine("Ingrese su email:");
-    string email = Console.ReadLine();
+    Console.Write("Ingrese su email:");
+    string? email = Console.ReadLine();
 
     var context = new ReservaContext
     {

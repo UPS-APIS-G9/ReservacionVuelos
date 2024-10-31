@@ -17,26 +17,34 @@ namespace ReservacionVuelos.Handlers
 
             foreach (var reserva in reservaciones)
             {
-                Console.WriteLine($"Código de Reserva: {reserva.CodigoReserva}, Asiento: {reserva.AsientoSeleccionado?.CodigoReserva ?? "No asignado"}");
+                Console.WriteLine(reserva.ToString());
             }
 
-            Console.Write("Ingrese el código de asiento a seleccionar: ");
-            var codigoAsiento = Console.ReadLine();
+            Console.Write("Ingrese el código de reserva a seleccionar: ");
+            var codigoReserva = Console.ReadLine();
+
+            Console.WriteLine("Verificando el código de reserva...");
 
             var asientoSeleccionado = reservaciones
                 .Select(r => r.AsientoSeleccionado)
-                .FirstOrDefault(a => a?.CodigoReserva == codigoAsiento);
+                .FirstOrDefault(a => a?.CodigoReserva == codigoReserva);
 
             if (asientoSeleccionado != null)
             {
                 context.AsientoSeleccionado = asientoSeleccionado;
-                Console.WriteLine($"Asiento {codigoAsiento} seleccionado con éxito.");
+
                 base.Handle(context);
             }
             else
             {
-                Console.WriteLine("El código de asiento ingresado no es válido. Intente nuevamente.");
+                Console.WriteLine("El código de reserva ingresado no es válido. Intente nuevamente.");
             }
+        }
+
+        private bool VerificarCodigoReserva(string codigoreserva)
+        {
+
+            return false;
         }
     }
 }

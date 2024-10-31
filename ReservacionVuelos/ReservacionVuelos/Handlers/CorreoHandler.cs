@@ -18,7 +18,7 @@ namespace ReservacionVuelos.Handlers
             {
                 _resumenService.GenerarResumenPorFecha(context.Reservaciones);
             }
-            Console.WriteLine("Correo validado, continuando con la reserva...");
+            Console.WriteLine("\r\n");
             base.Handle(context);
         }
     }

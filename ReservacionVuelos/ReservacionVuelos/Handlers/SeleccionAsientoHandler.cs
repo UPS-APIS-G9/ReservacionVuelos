@@ -6,10 +6,16 @@ namespace ReservacionVuelos.Handlers
     {
         public override void Handle(ReservaContext context)
         {
-            Console.WriteLine("Verificando el código de asiento...");
+            if (string.IsNullOrWhiteSpace(context.AsientoSeleccionado?.CodigoAsiento))
+            {
+                Console.Write("Ingrese el código de asiento a reservar:");
+                var codigoAsiento = Console.ReadLine();
+
+            }
+
             if (string.IsNullOrWhiteSpace(context.CodigoAsiento))
             {
-                throw new Exception("Código de asiento no proporcionado.");
+                throw new Exception("Código de asiento no válido.");
             }
 
             base.Handle(context);

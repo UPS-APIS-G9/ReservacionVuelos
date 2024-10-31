@@ -12,5 +12,6 @@ namespace ReservacionVuelos.DTOs
         public bool IsAdmin => Email == "admin@airline.com";
 
         public List<Reservacion>? Reservaciones { get; set; } = new();
+        public List<Reservacion>? AsientosReservados { get; set; } = new();
     }
 }
