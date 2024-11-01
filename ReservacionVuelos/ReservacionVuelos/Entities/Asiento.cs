@@ -5,6 +5,8 @@
         public string CodigoReserva { get; private set; }
         public string CodigoAsiento { get; private set; }
         public string Categoria { get; private set; }
+        public bool EsVentana { get; private set; } = false;
+        public bool EsPasillo { get; private set; } = false;
         public bool Reservado { get; private set; } = false;
 
         private Asiento() { }
@@ -33,6 +35,18 @@
             public AsientoBuilder SetCategoria(string categoria)
             {
                 asiento.Categoria = categoria;
+                return this;
+            }
+
+            public AsientoBuilder SetEsVentana(bool esVentana)
+            {
+                asiento.EsVentana = esVentana;
+                return this;
+            }
+
+            public AsientoBuilder SetEsPasillo(bool esPasillo)
+            {
+                asiento.EsPasillo = esPasillo;
                 return this;
             }
 

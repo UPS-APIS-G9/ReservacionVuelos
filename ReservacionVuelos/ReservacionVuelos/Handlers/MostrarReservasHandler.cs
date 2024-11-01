@@ -40,11 +40,5 @@ namespace ReservacionVuelos.Handlers
                 Console.WriteLine("El código de reserva ingresado no es válido. Intente nuevamente.");
             }
         }
-
-        private bool VerificarCodigoReserva(string codigoreserva)
-        {
-
-            return false;
-        }
     }
 }

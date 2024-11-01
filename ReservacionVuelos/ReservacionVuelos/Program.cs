@@ -12,15 +12,16 @@ try
     List<string> contenidoSeleccionAsientos = LeerArchivo.Instance.GetcontenidoSeleccionAsiento();
 
     List<Reservacion> reservaciones = new();
-    ReservacionService reservacionService = new();
+    List<Asiento> asientosDisponibles = new();
+    BuilderService builderService = new();
 
     foreach (var lineaReservacion in contenidoReservaciones)
     {
         var reservacionInfo = new ReservacionInfo(lineaReservacion);
 
-        Pasajero pasajero = reservacionService.CrearPasajero(reservacionInfo);
-        Vuelo vuelo = reservacionService.CrearVuelo(reservacionInfo);
-        Asiento asiento = reservacionService.CrearAsiento(reservacionInfo);
+        Pasajero pasajero = builderService.CrearPasajero(reservacionInfo);
+        Vuelo vuelo = builderService.CrearVuelo(reservacionInfo);
+        Asiento asiento = builderService.CrearAsiento(reservacionInfo);
 
         Reservacion reservacion = new Reservacion.ReservacionBuilder()
             .SetCodigoReserva(reservacionInfo.CodigoReserva)
@@ -30,6 +31,7 @@ try
             .Build();
 
         reservaciones.Add(reservacion);
+        asientosDisponibles.Add(asiento);
     }
 
     foreach (var codigoReserva in contenidoSeleccionAsientos)
@@ -40,7 +42,7 @@ try
 
         if (reservacion != null && reservacion.AsientoSeleccionado != null)
         {
-            Asiento asientoActualizado = reservacionService.ActualizarAsiento(reservacion, true);
+            Asiento asientoActualizado = builderService.ActualizarAsiento(reservacion, true);
 
             Reservacion reservacionActualizada = new Reservacion.ReservacionBuilder()
                 .SetCodigoReserva(reservacion.CodigoReserva)
@@ -60,7 +62,8 @@ try
     var context = new ReservaContext
     {
         Email = email??"",
-        Reservaciones = reservaciones
+        Reservaciones = reservaciones,
+        AsientosDisponibles = asientosDisponibles
     };
 
     // Crear y encadenar los handlers
@@ -76,8 +79,8 @@ try
     validacionFechaHoraHandler.SetNext(guardarSeleccionHandler);
 
     emailHandler.Handle(context);
-    Console.WriteLine("Proceso completado exitosamente.");
 
+    Console.WriteLine("Proceso completado exitosamente.");
 }
 catch (Exception ex)
 {

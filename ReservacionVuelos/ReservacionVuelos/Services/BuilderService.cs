@@ -4,7 +4,7 @@ using ReservacionVuelos.Enums;
 
 namespace ReservacionVuelos.Services
 {
-    public class ReservacionService
+    public class BuilderService
     {
         public Pasajero CrearPasajero(ReservacionInfo info) =>
             new Pasajero.PasajeroBuilder()
@@ -45,5 +45,13 @@ namespace ReservacionVuelos.Services
                     .SetVuelo(vuelo)
                     .SetPasajero(pasajero)
                     .Build();
+
+        public Asiento CrearAsiento(string codigo, string categoria, bool esVentana, bool esPasillo) =>
+         new Asiento.AsientoBuilder()
+                .SetCodigoReserva(codigo)
+                .SetCategoria(categoria)
+                .SetEsVentana(esVentana)
+                .SetEsPasillo(esPasillo)
+                .Build();
     }
 }
