@@ -39,7 +39,7 @@ namespace ReservacionVuelos.Services
                 .SetEsPasillo(esPasillo)
                 .Build();
 
-        public Asiento CrearAsiento(Asiento asiento) =>
+        public Asiento CrearAsientoReservado(Asiento asiento) =>
          new Asiento.AsientoBuilder()
                 .SetCodigoReserva(asiento.CodigoReserva)
                 .SetCategoria(asiento.Categoria)

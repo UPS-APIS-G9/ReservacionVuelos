@@ -17,7 +17,7 @@ namespace ReservacionVuelos.Services
             {
                 if (asientosReservados.Contains(asiento.CodigoReserva))
                 {
-                    builderService.CrearAsiento(asiento);
+                    builderService.CrearAsientoReservado(asiento);
                 }
             }
 
