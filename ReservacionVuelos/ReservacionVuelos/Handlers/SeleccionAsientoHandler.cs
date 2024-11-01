@@ -8,12 +8,10 @@ namespace ReservacionVuelos.Handlers
     {
         public override void Handle(ReservaContext context)
         {
-            if (string.IsNullOrWhiteSpace(context.AsientoSeleccionado?.CodigoAsiento))
+            if (context.AsientoSeleccionado == null || string.IsNullOrWhiteSpace(context.AsientoSeleccionado?.CodigoAsiento))
             {
                 Console.Write("Ingrese el código de asiento a reservar (Ej. A1):");
-                var codigoAsiento = Console.ReadLine();
-
-                codigoAsiento = codigoAsiento ?? "";
+                var codigoAsiento = Console.ReadLine() ?? "";
 
                 if (!Regex.IsMatch(codigoAsiento, @"^[A-F]\d+$"))
                 {
@@ -23,33 +21,57 @@ namespace ReservacionVuelos.Handlers
                 string columna = codigoAsiento[0].ToString();
                 int fila = int.Parse(codigoAsiento[1..]);
 
-                var clase = DistribucionAsientos.ObtenerClasePorFila(fila);
+                var claseAsiento = DistribucionAsientos.ObtenerClasePorFila(fila);
 
-                if (DistribucionAsientos.EsAsientoValido(clase, fila, columna, context.AsientosDisponibles))
+                if (DistribucionAsientos.EsAsientoValido(claseAsiento, fila, columna, context.AsientosDisponibles))
                 {
-                    var asientoSeleccionado = context.AsientosDisponibles.FirstOrDefault(asiento => asiento.CodigoAsiento == codigoAsiento && !asiento.Reservado);
+                    var asientoSeleccionado = context.AsientosDisponibles
+                        .FirstOrDefault(asiento => asiento.CodigoAsiento == codigoAsiento && !asiento.Reservado);
 
-                    if (asientoSeleccionado != null)
-                    {
-                        context.AsientoSeleccionado = asientoSeleccionado;
-                        Console.WriteLine($"Asiento {codigoAsiento} seleccionado correctamente en la clase {clase}.");
-                        base.Handle(context);
-                    }
-                    else
+                    if (asientoSeleccionado == null)
                     {
                         throw new Exception("El asiento ya está reservado o no existe en el sistema.");
                     }
+
+                    var reserva = context.Reservaciones
+                        .FirstOrDefault(r => r.CodigoReserva == context.CodigoReservaSeleccionada);
+
+                    if (reserva?.AsientoSeleccionado != null && reserva.AsientoSeleccionado.CodigoAsiento != codigoAsiento)
+                    {
+                        throw new Exception("No puede seleccionar más de un asiento en el mismo vuelo.");
+                    }
+
+                    if (reserva != null && !EsAsientoPermitidoParaClasePasajero(reserva.AsientoSeleccionado.Categoria, claseAsiento))
+                    {
+                        throw new Exception($"La reserva con clase '{reserva.AsientoSeleccionado.Categoria}' no puede seleccionar asientos en la cabina '{claseAsiento}'.");
+                    }
+
+                    context.AsientoSeleccionado = asientoSeleccionado;
+                    Console.WriteLine($"Asiento {codigoAsiento} seleccionado correctamente en la clase {claseAsiento}.");
+                    base.Handle(context);
                 }
                 else
                 {
-                    throw new Exception($"El asiento {codigoAsiento} no es válido para la clase {clase} o excede el límite de asientos disponibles en esta clase.");
+                    throw new Exception($"El asiento {codigoAsiento} no es válido para la clase {claseAsiento} o excede el límite de asientos disponibles en esta clase.");
                 }
             }
-            else {
-                throw new Exception("Posee una reserva activa.");
+            else
+            {
+                throw new Exception("Ya posee una reserva activa.");
             }
+        }
 
-            base.Handle(context);
+        private bool EsAsientoPermitidoParaClasePasajero(string clasePasajero, string claseAsiento)
+        {
+            if (clasePasajero == "P")
+            {
+                return claseAsiento == "Premium" || claseAsiento == "Premium Economy";
+            }
+            else
+            {
+                return claseAsiento != "Premium";
+            }
         }
     }
+
 }

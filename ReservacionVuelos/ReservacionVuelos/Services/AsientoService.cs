@@ -1,4 +1,5 @@
-﻿using ReservacionVuelos.Entities;
+﻿using ReservacionVuelos.DTOs;
+using ReservacionVuelos.Entities;
 
 namespace ReservacionVuelos.Services
 {
@@ -6,8 +7,8 @@ namespace ReservacionVuelos.Services
     {
         public List<Asiento> GenerarAsientosDisponibles()
         {
-            BuilderService builderService = new();
             List<Asiento> asientosDisponibles = new List<Asiento>();
+            BuilderService builderService = new();
 
             CrearAsientosPorClase(asientosDisponibles);
 
@@ -15,7 +16,7 @@ namespace ReservacionVuelos.Services
 
             foreach (var asiento in asientosDisponibles)
             {
-                if (asientosReservados.Contains(asiento.CodigoReserva))
+                if (asientosReservados.Contains(asiento.CodigoAsiento))
                 {
                     builderService.CrearAsientoReservado(asiento);
                 }
@@ -24,7 +25,7 @@ namespace ReservacionVuelos.Services
             return asientosDisponibles;
         }
 
-        public List<Asiento> CrearAsientosPorClase(List<Asiento> asientosDisponibles)
+        private void CrearAsientosPorClase(List<Asiento> asientosDisponibles)
         {
             BuilderService builderService = new();
 
@@ -51,8 +52,6 @@ namespace ReservacionVuelos.Services
                     asientosDisponibles.Add(builderService.CrearAsiento($"{columna}{fila}", "Economy", columna == 'A' || columna == 'F', columna == 'B' || columna == 'E'));
                 }
             }
-
-            return asientosDisponibles;
         }
 
         private HashSet<string> ObtenerAsientosReservados()
@@ -65,12 +64,13 @@ namespace ReservacionVuelos.Services
                 var datos = linea.Split('|');
                 if (datos.Length >= 2)
                 {
-                    var codigoReserva = datos[1];
-                    asientosReservados.Add(codigoReserva);
+                    var codigoAsiento = datos[1];
+                    asientosReservados.Add(codigoAsiento);
                 }
             }
 
             return asientosReservados;
         }
     }
+
 }
