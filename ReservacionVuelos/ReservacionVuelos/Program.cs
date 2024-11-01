@@ -31,7 +31,6 @@ try
             .Build();
 
         reservaciones.Add(reservacion);
-        asientosDisponibles.Add(asiento);
     }
 
     foreach (var codigoReserva in contenidoSeleccionAsientos)
@@ -42,7 +41,7 @@ try
 
         if (reservacion != null && reservacion.AsientoSeleccionado != null)
         {
-            Asiento asientoActualizado = builderService.ActualizarAsiento(reservacion, true);
+            Asiento asientoActualizado = builderService.ActualizarAsiento(reservacion, asientoReservaInfo.CodigoAsiento, true);
 
             Reservacion reservacionActualizada = new Reservacion.ReservacionBuilder()
                 .SetCodigoReserva(reservacion.CodigoReserva)
@@ -62,11 +61,11 @@ try
     var context = new ReservaContext
     {
         Email = email??"",
-        Reservaciones = reservaciones,
-        AsientosDisponibles = asientosDisponibles
+        Reservaciones = reservaciones
     };
 
-    // Crear y encadenar los handlers
+    context.AsientosDisponibles = new AsientoService().GenerarAsientosDisponibles();
+
     var emailHandler = new CorreoHandler();
     var mostrarReservasHandler = new MostrarReservasHandler();
     var seleccionAsientoHandler = new SeleccionAsientoHandler();

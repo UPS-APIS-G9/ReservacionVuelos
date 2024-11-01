@@ -7,8 +7,26 @@ namespace ReservacionVuelos.Services
         public List<Asiento> GenerarAsientosDisponibles()
         {
             BuilderService builderService = new();
+            List<Asiento> asientosDisponibles = new List<Asiento>();
 
-            var asientosDisponibles = new List<Asiento>();
+            CrearAsientosPorClase(asientosDisponibles);
+
+            var asientosReservados = ObtenerAsientosReservados();
+
+            foreach (var asiento in asientosDisponibles)
+            {
+                if (asientosReservados.Contains(asiento.CodigoReserva))
+                {
+                    builderService.CrearAsiento(asiento);
+                }
+            }
+
+            return asientosDisponibles;
+        }
+
+        public List<Asiento> CrearAsientosPorClase(List<Asiento> asientosDisponibles)
+        {
+            BuilderService builderService = new();
 
             for (int fila = 1; fila <= 3; fila++)
             {
@@ -35,6 +53,24 @@ namespace ReservacionVuelos.Services
             }
 
             return asientosDisponibles;
+        }
+
+        private HashSet<string> ObtenerAsientosReservados()
+        {
+            var asientosReservados = new HashSet<string>();
+            List<string> contenidoSeleccionAsientos = LeerArchivo.Instance.GetcontenidoSeleccionAsiento();
+
+            foreach (var linea in contenidoSeleccionAsientos)
+            {
+                var datos = linea.Split('|');
+                if (datos.Length >= 2)
+                {
+                    var codigoReserva = datos[1];
+                    asientosReservados.Add(codigoReserva);
+                }
+            }
+
+            return asientosReservados;
         }
     }
 }

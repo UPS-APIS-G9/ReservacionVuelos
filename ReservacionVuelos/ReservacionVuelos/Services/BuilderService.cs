@@ -31,9 +31,27 @@ namespace ReservacionVuelos.Services
                 .SetCategoria(info.CategoriaAsiento)
                 .Build();
 
-        public Asiento ActualizarAsiento(Reservacion info, bool reservado) =>
+        public Asiento CrearAsiento(string codigoAsiento, string categoria, bool esVentana, bool esPasillo) =>
+         new Asiento.AsientoBuilder()
+                .SetCodigoAsiento(codigoAsiento)
+                .SetCategoria(categoria)
+                .SetEsVentana(esVentana)
+                .SetEsPasillo(esPasillo)
+                .Build();
+
+        public Asiento CrearAsiento(Asiento asiento) =>
+         new Asiento.AsientoBuilder()
+                .SetCodigoReserva(asiento.CodigoReserva)
+                .SetCategoria(asiento.Categoria)
+                .SetEsVentana(asiento.EsVentana)
+                .SetEsPasillo(asiento.EsPasillo)
+                .SetReservado(true)
+                .Build();
+
+        public Asiento ActualizarAsiento(Reservacion info, string codigoAsiento, bool reservado) =>
             new Asiento.AsientoBuilder()
                 .SetCodigoReserva(info.CodigoReserva)
+                .SetCodigoAsiento(codigoAsiento)
                 .SetCategoria(info.AsientoSeleccionado.Categoria)
                 .SetReservado(reservado)
                 .Build();
@@ -45,13 +63,5 @@ namespace ReservacionVuelos.Services
                     .SetVuelo(vuelo)
                     .SetPasajero(pasajero)
                     .Build();
-
-        public Asiento CrearAsiento(string codigo, string categoria, bool esVentana, bool esPasillo) =>
-         new Asiento.AsientoBuilder()
-                .SetCodigoReserva(codigo)
-                .SetCategoria(categoria)
-                .SetEsVentana(esVentana)
-                .SetEsPasillo(esPasillo)
-                .Build();
     }
 }

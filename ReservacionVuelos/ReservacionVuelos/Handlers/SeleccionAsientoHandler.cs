@@ -23,11 +23,11 @@ namespace ReservacionVuelos.Handlers
                 string columna = codigoAsiento[0].ToString();
                 int fila = int.Parse(codigoAsiento[1..]);
 
-                var clase = ObtenerClasePorFila(fila);
+                var clase = DistribucionAsientos.ObtenerClasePorFila(fila);
 
                 if (DistribucionAsientos.EsAsientoValido(clase, fila, columna, context.AsientosDisponibles))
                 {
-                    var asientoSeleccionado = context.AsientosDisponibles.FirstOrDefault(a => a.CodigoReserva == codigoAsiento && !a.Reservado);
+                    var asientoSeleccionado = context.AsientosDisponibles.FirstOrDefault(asiento => asiento.CodigoAsiento == codigoAsiento && !asiento.Reservado);
 
                     if (asientoSeleccionado != null)
                     {
@@ -50,14 +50,6 @@ namespace ReservacionVuelos.Handlers
             }
 
             base.Handle(context);
-        }
-
-        private string ObtenerClasePorFila(int fila)
-        {
-            if (fila >= 1 && fila <= 3) return "Premium";
-            if (fila >= 4 && fila <= 8) return "Premium Economy";
-            if (fila >= 9 && fila <= 27) return "Economy";
-            return "Desconocida";
         }
     }
 }

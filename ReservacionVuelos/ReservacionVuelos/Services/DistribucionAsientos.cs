@@ -23,14 +23,21 @@ namespace ReservacionVuelos.Services
 
             var (filaInicio, filaFin, maxAsientos, columnasValidas) = Clases[clase];
 
-            // Validar rango de filas, columna y límite de asientos
             if (fila >= filaInicio && fila <= filaFin && columnasValidas.Contains(columna))
             {
                 int asientosEnClase = asientosSeleccionados.Count(a => a.Categoria == clase);
-                return asientosEnClase < maxAsientos;
+                return asientosEnClase <= maxAsientos;
             }
 
             return false;
+        }
+
+        public static string ObtenerClasePorFila(int fila)
+        {
+            if (fila >= 1 && fila <= 3) return "Premium";
+            if (fila >= 4 && fila <= 8) return "Premium Economy";
+            if (fila >= 9 && fila <= 27) return "Economy";
+            return "Desconocida";
         }
     }
 }
