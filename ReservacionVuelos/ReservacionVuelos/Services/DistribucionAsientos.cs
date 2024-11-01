@@ -7,13 +7,10 @@ namespace ReservacionVuelos.Services
         public static readonly Dictionary<string, (int filaInicio, int filaFin, int maxAsientos, List<string> columnas)> Clases = new()
         {
             {
-                "Premium", (1, 3, 12, new List<string> { "A", "B", "E", "F" })
+                "P", (1, 3, 12, new List<string> { "A", "B", "E", "F" })
             },
             {
-                "Premium Economy", (4, 8, 30, new List<string> { "A", "B", "C", "D", "E", "F" })
-            },
-            {
-                "Economy", (9, 27, 114, new List<string> { "A", "B", "C", "D", "E", "F" })
+                "Y", (4, 27, 144, new List<string> { "A", "B", "C", "D", "E", "F" })
             }
         };
 
@@ -34,9 +31,8 @@ namespace ReservacionVuelos.Services
 
         public static string ObtenerClasePorFila(int fila)
         {
-            if (fila >= 1 && fila <= 3) return "Premium";
-            if (fila >= 4 && fila <= 8) return "Premium Economy";
-            if (fila >= 9 && fila <= 27) return "Economy";
+            if (fila >= 1 && fila <= 3) return "P";
+            if (fila >= 4 && fila <= 27) return "Y";
             return "Desconocida";
         }
     }

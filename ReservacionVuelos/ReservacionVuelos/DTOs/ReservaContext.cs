@@ -21,11 +21,11 @@ namespace ReservacionVuelos.DTOs
         {
             if (ClasePasajero == "P")
             {
-                return claseAsiento == "Premium" || claseAsiento == "Premium Economy";
+                return claseAsiento == "P";
             }
             else
             {
-                return claseAsiento != "Premium";
+                return claseAsiento != "P";
             }
         }
 

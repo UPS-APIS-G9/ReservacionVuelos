@@ -8,6 +8,7 @@ namespace ReservacionVuelos.Handlers
     {
         public override void Handle(ReservaContext context)
         {
+            BuilderService builderService = new();
             if (context.AsientoSeleccionado == null || string.IsNullOrWhiteSpace(context.AsientoSeleccionado?.CodigoAsiento))
             {
                 Console.Write("Ingrese el código de asiento a reservar (Ej. A1):");
@@ -23,6 +24,14 @@ namespace ReservacionVuelos.Handlers
 
                 var claseAsiento = DistribucionAsientos.ObtenerClasePorFila(fila);
 
+                var verificarReserva = (context.Reservaciones?.FirstOrDefault(r => r.CodigoReserva == context.AsientoSeleccionado.CodigoReserva)) ??
+                    throw new Exception("Reserva no encontrada.");
+                
+                if (verificarReserva.AsientoSeleccionado.Categoria != claseAsiento)
+                {
+                    throw new Exception($"La clase del asiento seleccionado ({claseAsiento}) no coincide con la clase de la reserva ({verificarReserva.AsientoSeleccionado.Categoria}).");
+                }
+
                 if (DistribucionAsientos.EsAsientoValido(claseAsiento, fila, columna, context.AsientosDisponibles))
                 {
                     var asientoSeleccionado = context.AsientosDisponibles
@@ -33,10 +42,12 @@ namespace ReservacionVuelos.Handlers
                         throw new Exception("El asiento ya está reservado o no existe en el sistema.");
                     }
 
-                    var reserva = context.Reservaciones
-                        .FirstOrDefault(r => r.CodigoReserva == context.CodigoReservaSeleccionada);
+                    asientoSeleccionado = builderService.ActualizarAsientoReservado(context.AsientoSeleccionado.CodigoReserva, asientoSeleccionado);
 
-                    if (reserva?.AsientoSeleccionado != null && reserva.AsientoSeleccionado.CodigoAsiento != codigoAsiento)
+                    var reserva = context.Reservaciones
+                        .FirstOrDefault(r => r.CodigoReserva == context.AsientoSeleccionado.CodigoReserva);
+
+                    if (reserva?.AsientoSeleccionado.CodigoAsiento != null && reserva?.AsientoSeleccionado.CodigoAsiento != codigoAsiento)
                     {
                         throw new Exception("No puede seleccionar más de un asiento en el mismo vuelo.");
                     }
@@ -65,11 +76,11 @@ namespace ReservacionVuelos.Handlers
         {
             if (clasePasajero == "P")
             {
-                return claseAsiento == "Premium" || claseAsiento == "Premium Economy";
+                return claseAsiento == "P" || claseAsiento == "Y";
             }
             else
             {
-                return claseAsiento != "Premium";
+                return claseAsiento != "P";
             }
         }
     }

@@ -48,6 +48,16 @@ namespace ReservacionVuelos.Services
                 .SetReservado(true)
                 .Build();
 
+        public Asiento ActualizarAsientoReservado(string codigoReserva, Asiento asiento) =>
+         new Asiento.AsientoBuilder()
+                .SetCodigoAsiento(asiento.CodigoAsiento)
+                .SetCodigoReserva(codigoReserva)
+                .SetCategoria(asiento.Categoria)
+                .SetEsVentana(asiento.EsVentana)
+                .SetEsPasillo(asiento.EsPasillo)
+                .SetReservado(true)
+                .Build();
+
         public Asiento ActualizarAsiento(Reservacion info, string codigoAsiento, bool reservado) =>
             new Asiento.AsientoBuilder()
                 .SetCodigoReserva(info.CodigoReserva)

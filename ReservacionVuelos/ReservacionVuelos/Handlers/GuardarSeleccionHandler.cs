@@ -7,8 +7,8 @@ namespace ReservacionVuelos.Handlers
         public override void Handle(ReservaContext context)
         {
             Console.WriteLine("Guardando selección en archivo...");
-            // Lógica para escribir en el archivo (p. ej., usando File.AppendAllText)
-            // File.AppendAllText("Files/seat-selection.txt", $"{context.CodigoAsiento}|{context.Email}");
+
+            File.AppendAllText("Files/seat-selection.txt", $"{context.CodigoAsiento}|{context.Email}|{context.FechaHoraLocal + Environment.NewLine}");
             base.Handle(context);
         }
     }

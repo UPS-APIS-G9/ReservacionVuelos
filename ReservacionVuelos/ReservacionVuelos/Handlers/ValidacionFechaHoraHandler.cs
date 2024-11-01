@@ -1,4 +1,5 @@
 ﻿using ReservacionVuelos.DTOs;
+using ReservacionVuelos.Utiles;
 
 namespace ReservacionVuelos.Handlers
 {
@@ -9,11 +10,11 @@ namespace ReservacionVuelos.Handlers
             Console.WriteLine("Ingrese la fecha y hora actual:");
             var fechaHoraActual = Console.ReadLine();
 
-            if (context.FechaHoraLocal < DateTime.Now)
+            if (fechaHoraActual?.ToFormatedDateTime() < DateTime.Now.ToFormatedDateTime())
             {
                 throw new Exception("Fecha y hora inválidas.");
             }
-
+            context.FechaHoraLocal = fechaHoraActual?.ToFormatedDateTime();
             base.Handle(context);
         }
     }
