@@ -23,5 +23,10 @@
 
             return dateTime;
         }
+
+        public static string ToFormatedStringDateTime(this DateTime now)
+        {
+            return now.ToString("yyyy-MM-dd HH:mm:ss");
+        }
     }
 }
