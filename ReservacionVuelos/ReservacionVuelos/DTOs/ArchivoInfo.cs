@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ReservacionVuelos.Utiles;
 
 namespace ReservacionVuelos.DTOs
 {
@@ -38,7 +34,7 @@ namespace ReservacionVuelos.DTOs
             AlcanceVuelo = partes[9];
             AeropuertoOrigen = partes[10];
             AeropuertoDestino = partes[11];
-            FechaHoraVuelo = DateTime.Parse(partes[12]);
+            FechaHoraVuelo = partes[12].ToFormatedDateTime();
         }
     }
 

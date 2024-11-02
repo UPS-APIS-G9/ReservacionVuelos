@@ -5,11 +5,11 @@ using ReservacionVuelos.Services;
 
 try
 {
-    LeerArchivo.Instance.InitializeFileReservations("Files/reservations.txt");
-    LeerArchivo.Instance.InitializeFileSeatSelection("Files/seat-selection.txt");
+    LeerArchivoService.Instance.InitializeFileReservations("Files/reservations.txt");
+    LeerArchivoService.Instance.InitializeFileSeatSelection("Files/seat-selection.txt");
 
-    List<string> contenidoReservaciones = LeerArchivo.Instance.GetcontenidoReservaciones();
-    List<string> contenidoSeleccionAsientos = LeerArchivo.Instance.GetcontenidoSeleccionAsiento();
+    List<string> contenidoReservaciones = LeerArchivoService.Instance.GetcontenidoReservaciones();
+    List<string> contenidoSeleccionAsientos = LeerArchivoService.Instance.GetcontenidoSeleccionAsiento();
 
     List<Reservacion> reservaciones = new();
     List<Asiento> asientosDisponibles = new();
@@ -57,19 +57,15 @@ try
         }
     }
 
-    Console.Write("Ingrese su email:");
-    string? email = Console.ReadLine();
-
     var context = new ReservaContext
     {
-        Email = email??"",
         Reservaciones = reservaciones
     };
 
     context.AsientosDisponibles = asientoService.GenerarAsientosDisponibles();
 
     var emailHandler = new CorreoHandler(resumenService);
-    var mostrarReservasHandler = new MostrarReservasHandler();
+    var mostrarReservasHandler = new MostrarReservasHandler(asientoService);
     var seleccionAsientoHandler = new SeleccionAsientoHandler(builderService, asientoService);
     var validacionFechaHoraHandler = new ValidacionFechaHoraHandler();
     var guardarSeleccionHandler = new GuardarSeleccionHandler();

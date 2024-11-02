@@ -1,4 +1,5 @@
 ﻿using ReservacionVuelos.DTOs;
+using ReservacionVuelos.Entities;
 using ReservacionVuelos.Services;
 
 namespace ReservacionVuelos.Handlers
@@ -14,6 +15,14 @@ namespace ReservacionVuelos.Handlers
 
         public override void Handle(ReservaContext context)
         {
+            Console.Write("Ingrese su email:");
+            string? email = Console.ReadLine();
+            context.Email = email ?? "";
+
+            var reservaciones = context.Reservaciones?.FindAll(registros => registros.Pasajero.Correo.Equals(context.Email));
+
+            context.Reservaciones = reservaciones;
+
             if (context.IsAdmin)
             {
                 _resumenService.GenerarResumenPorFecha(context.Reservaciones);

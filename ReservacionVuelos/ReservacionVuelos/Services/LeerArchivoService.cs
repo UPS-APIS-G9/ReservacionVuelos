@@ -1,18 +1,18 @@
 ﻿namespace ReservacionVuelos.Services
 {
-    public class LeerArchivo
+    public class LeerArchivoService
     {
-        private static readonly Lazy<LeerArchivo> instance =
-        new Lazy<LeerArchivo>(() => new LeerArchivo());
+        private static readonly Lazy<LeerArchivoService> instance =
+        new Lazy<LeerArchivoService>(() => new LeerArchivoService());
 
         private List<string> contenidoReservaciones;
         private List<string> contenidoSeleccionAsiento;
         private string rutaReservaciones;
         private string rutaSeleccionAsiento;
 
-        private LeerArchivo() { }
+        private LeerArchivoService() { }
 
-        public static LeerArchivo Instance => instance.Value;
+        public static LeerArchivoService Instance => instance.Value;
 
         public void InitializeFileReservations(string path)
         {

@@ -1,21 +1,27 @@
 ﻿using ReservacionVuelos.DTOs;
+using ReservacionVuelos.Services;
 
 namespace ReservacionVuelos.Handlers
 {
     public class MostrarReservasHandler : ReservaHandlerBase
     {
+        private readonly AsientoService asientoService;
+
+        public MostrarReservasHandler(AsientoService asientoService)
+        {
+            this.asientoService = asientoService;
+        }
+
         public override void Handle(ReservaContext context)
         {
             Console.WriteLine("Reservas disponibles:");
 
-            var reservaciones = context.Reservaciones?.FindAll(registros => registros.Pasajero.Correo.Equals(context.Email));
-
-            if (reservaciones?.Count == 0)
+            if (context.Reservaciones?.Count == 0)
             {
                 throw new Exception("No se encontraron reservas para este pasajero.");
             }
 
-            foreach (var reserva in reservaciones)
+            foreach (var reserva in context.Reservaciones)
             {
                 Console.WriteLine(reserva.ToString());
             }
@@ -25,9 +31,17 @@ namespace ReservacionVuelos.Handlers
 
             Console.WriteLine("Verificando el código de reserva...");
 
-            var asientoSeleccionado = reservaciones
+            var asientoSeleccionado = context.Reservaciones
                 .Select(r => r.AsientoSeleccionado)
                 .FirstOrDefault(a => a?.CodigoReserva == codigoReserva);
+
+            var vuelo = context.Reservaciones
+                .FirstOrDefault(v => v.CodigoReserva == codigoReserva);
+
+            if (!asientoService.PuedeSeleccionarAsiento(vuelo.Vuelo.FechaHoraVuelo, vuelo.Vuelo.Alcance.Equals("N")))
+            {
+                throw new Exception("No se puede seleccionar un asiento debido a restricciones de tiempo.");
+            }
 
             if (asientoSeleccionado != null)
             {

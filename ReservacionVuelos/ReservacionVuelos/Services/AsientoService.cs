@@ -55,7 +55,7 @@ namespace ReservacionVuelos.Services
         private HashSet<string> ObtenerAsientosReservados()
         {
             var asientosReservados = new HashSet<string>();
-            List<string> contenidoSeleccionAsientos = LeerArchivo.Instance.GetcontenidoSeleccionAsiento();
+            List<string> contenidoSeleccionAsientos = LeerArchivoService.Instance.GetcontenidoSeleccionAsiento();
 
             foreach (var linea in contenidoSeleccionAsientos)
             {
@@ -100,6 +100,20 @@ namespace ReservacionVuelos.Services
             if (fila >= 1 && fila <= 3) return "P";
             if (fila >= 4 && fila <= 27) return "Y";
             return "Desconocida";
+        }
+
+        public bool PuedeSeleccionarAsiento(DateTime fechaHoraVuelo, bool esNacional)
+        {
+            TimeSpan tiempoRestante = fechaHoraVuelo - DateTime.Now;
+
+            if (esNacional)
+            {
+                return tiempoRestante.TotalHours >= 6;
+            }
+            else
+            {
+                return tiempoRestante.TotalHours >= 12;
+            }
         }
     }
 

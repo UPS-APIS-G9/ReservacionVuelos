@@ -43,6 +43,7 @@ namespace ReservacionVuelos.Services
                 });
 
             Console.WriteLine("Resumen de vuelos y asientos reservados por fecha:");
+            Console.WriteLine("");
             foreach (var item in resumenAgrupadoPorFecha)
             {
                 Console.WriteLine(item.Fecha.ToFormatedStringDateTime());
@@ -51,6 +52,7 @@ namespace ReservacionVuelos.Services
                 {
                     Console.WriteLine($"{vuelo.NumeroVuelo}|{vuelo.Reservas.FirstOrDefault()?.CategoriaAsiento ?? "N"}|{vuelo.Reservas.FirstOrDefault()?.Origen}|{vuelo.Reservas.FirstOrDefault()?.Destino}|Asientos seleccionados: {vuelo.TotalAsientosOcupados}");
                 }
+                Console.WriteLine("");
             }
         }
 
