@@ -1,4 +1,5 @@
 ﻿using ReservacionVuelos.DTOs;
+using ReservacionVuelos.Utiles;
 
 namespace ReservacionVuelos.Handlers
 {
@@ -8,7 +9,9 @@ namespace ReservacionVuelos.Handlers
         {
             Console.WriteLine("Guardando selección en archivo...");
 
-            File.AppendAllText("Files/seat-selection.txt", $"{context.CodigoAsiento}|{context.Email}|{context.FechaHoraLocal + Environment.NewLine}");
+            File.AppendAllText("Files/seat-selection.txt",
+                $"{context.AsientoSeleccionado?.CodigoReserva}|{context.AsientoSeleccionado?.CodigoAsiento}|{context.FechaHoraLocal?.ToFormatedStringDateTime() + Environment.NewLine}");
+
             base.Handle(context);
         }
     }
