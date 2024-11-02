@@ -1,5 +1,8 @@
-# ReservacionVuelos
- Proyecto final Patrones de diseño
+## PROYECTO FINAL DE LA MATERIA PATRONES DE DISEÑO DE SOFTWARE
+### Integrantes:
+- Ricardo Tipán
+- Wilmer Caiza
+- Guido Guerrero
 
 1. Patrones implementados y la justificación para usarlos
     Singleton
