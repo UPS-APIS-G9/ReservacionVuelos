@@ -6,7 +6,7 @@ namespace ReservacionVuelos.Services
     public class AsientoService
     {
         
-        private BuilderService BuilderService;
+        private readonly BuilderService BuilderService;
 
         public AsientoService(BuilderService builderService)
         {
@@ -16,7 +16,6 @@ namespace ReservacionVuelos.Services
         public List<Asiento> GenerarAsientosDisponibles()
         {
             List<Asiento> asientosDisponibles = new List<Asiento>();
-            //BuilderService builderService = new();
 
             CrearAsientosPorClase(asientosDisponibles);
 
@@ -35,7 +34,6 @@ namespace ReservacionVuelos.Services
 
         private void CrearAsientosPorClase(List<Asiento> asientosDisponibles)
         {
-            //BuilderService builderService = new();
 
             for (int fila = 1; fila <= 3; fila++)
             {

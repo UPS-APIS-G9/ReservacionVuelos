@@ -6,10 +6,18 @@ namespace ReservacionVuelos.Handlers
 {
     public class SeleccionAsientoHandler : ReservaHandlerBase
     {
+
+        private readonly BuilderService builderService;
+        private readonly AsientoService asientoService;
+
+        public SeleccionAsientoHandler(BuilderService builderService, AsientoService asientoService)
+        {
+            this.builderService = builderService;
+            this.asientoService = asientoService;
+        }
+
         public override void Handle(ReservaContext context)
         {
-            BuilderService builderService = new();
-            AsientoService asientoService = new();
 
             if (context.AsientoSeleccionado == null || string.IsNullOrWhiteSpace(context.AsientoSeleccionado?.CodigoAsiento))
             {
