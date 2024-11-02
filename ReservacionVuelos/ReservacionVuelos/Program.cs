@@ -64,7 +64,7 @@ try
         Reservaciones = reservaciones
     };
 
-    context.AsientosDisponibles = new AsientoService().GenerarAsientosDisponibles();
+    context.AsientosDisponibles = new AsientoService(builderService).GenerarAsientosDisponibles();
 
     var emailHandler = new CorreoHandler();
     var mostrarReservasHandler = new MostrarReservasHandler();

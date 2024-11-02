@@ -5,10 +5,18 @@ namespace ReservacionVuelos.Services
 {
     public class AsientoService
     {
+        
+        private BuilderService BuilderService;
+
+        public AsientoService(BuilderService builderService)
+        {
+            BuilderService = builderService;
+        }
+
         public List<Asiento> GenerarAsientosDisponibles()
         {
             List<Asiento> asientosDisponibles = new List<Asiento>();
-            BuilderService builderService = new();
+            //BuilderService builderService = new();
 
             CrearAsientosPorClase(asientosDisponibles);
 
@@ -18,7 +26,7 @@ namespace ReservacionVuelos.Services
             {
                 if (asientosReservados.Contains(asiento.CodigoAsiento))
                 {
-                    builderService.CrearAsientoReservado(asiento);
+                    this.BuilderService.CrearAsientoReservado(asiento);
                 }
             }
 
@@ -27,21 +35,21 @@ namespace ReservacionVuelos.Services
 
         private void CrearAsientosPorClase(List<Asiento> asientosDisponibles)
         {
-            BuilderService builderService = new();
+            //BuilderService builderService = new();
 
             for (int fila = 1; fila <= 3; fila++)
             {
-                asientosDisponibles.Add(builderService.CrearAsiento("A" + fila, "P", true, false));
-                asientosDisponibles.Add(builderService.CrearAsiento("B" + fila, "P", false, true));
-                asientosDisponibles.Add(builderService.CrearAsiento("E" + fila, "P", false, true));
-                asientosDisponibles.Add(builderService.CrearAsiento("F" + fila, "P", true, false));
+                asientosDisponibles.Add(BuilderService.CrearAsiento("A" + fila, "P", true, false));
+                asientosDisponibles.Add(BuilderService.CrearAsiento("B" + fila, "P", false, true));
+                asientosDisponibles.Add(BuilderService.CrearAsiento("E" + fila, "P", false, true));
+                asientosDisponibles.Add(BuilderService.CrearAsiento("F" + fila, "P", true, false));
             }
 
             for (int fila = 4; fila <= 27; fila++)
             {
                 for (char columna = 'A'; columna <= 'F'; columna++)
                 {
-                    asientosDisponibles.Add(builderService.CrearAsiento($"{columna}{fila}", "Y", columna == 'A' || columna == 'F', columna == 'B' || columna == 'E'));
+                    asientosDisponibles.Add(BuilderService.CrearAsiento($"{columna}{fila}", "Y", columna == 'A' || columna == 'F', columna == 'B' || columna == 'E'));
                 }
             }
         }
