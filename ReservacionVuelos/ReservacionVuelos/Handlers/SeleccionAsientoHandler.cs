@@ -34,7 +34,7 @@ namespace ReservacionVuelos.Handlers
 
                 var claseAsiento = asientoService.ObtenerClasePorFila(fila);
 
-                var verificarReserva = (context.Reservaciones?.FirstOrDefault(r => r.CodigoReserva == context.AsientoSeleccionado.CodigoReserva)) ??
+                var verificarReserva = (context.Reservaciones?.FirstOrDefault(r => r.CodigoReserva == context.AsientoSeleccionado?.CodigoReserva)) ??
                     throw new Exception("Reserva no encontrada.");
                 
                 if (verificarReserva.AsientoSeleccionado.Categoria != claseAsiento)
@@ -52,10 +52,10 @@ namespace ReservacionVuelos.Handlers
                         throw new Exception("El asiento ya está reservado o no existe en el sistema.");
                     }
 
-                    asientoSeleccionado = builderService.ActualizarAsientoReservado(context.AsientoSeleccionado?.CodigoReserva, asientoSeleccionado);
+                    asientoSeleccionado = builderService.ActualizarAsientoReservado(context.AsientoSeleccionado?.CodigoReserva??"", asientoSeleccionado);
 
                     var reserva = context.Reservaciones
-                        .FirstOrDefault(r => r.CodigoReserva == context.AsientoSeleccionado.CodigoReserva);
+                        .FirstOrDefault(r => r.CodigoReserva == context.AsientoSeleccionado?.CodigoReserva);
 
                     if (reserva?.AsientoSeleccionado.CodigoAsiento != null && reserva?.AsientoSeleccionado.CodigoAsiento != codigoAsiento)
                     {
