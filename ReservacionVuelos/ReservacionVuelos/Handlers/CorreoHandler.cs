@@ -7,9 +7,9 @@ namespace ReservacionVuelos.Handlers
     {
         private readonly ResumenService _resumenService;
 
-        public CorreoHandler()
+        public CorreoHandler(ResumenService resumenService)
         {
-            _resumenService = new ResumenService();
+            this._resumenService = resumenService;
         }
 
         public override void Handle(ReservaContext context)

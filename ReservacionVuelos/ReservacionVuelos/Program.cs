@@ -15,6 +15,7 @@ try
     List<Asiento> asientosDisponibles = new();
     BuilderService builderService = new();
     AsientoService asientoService = new(builderService);
+    ResumenService resumenService = new();
 
     foreach (var lineaReservacion in contenidoReservaciones)
     {
@@ -67,7 +68,7 @@ try
 
     context.AsientosDisponibles = asientoService.GenerarAsientosDisponibles();
 
-    var emailHandler = new CorreoHandler();
+    var emailHandler = new CorreoHandler(resumenService);
     var mostrarReservasHandler = new MostrarReservasHandler();
     var seleccionAsientoHandler = new SeleccionAsientoHandler(builderService, asientoService);
     var validacionFechaHoraHandler = new ValidacionFechaHoraHandler();
