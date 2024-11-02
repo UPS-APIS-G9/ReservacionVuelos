@@ -65,6 +65,7 @@ try
     };
 
     context.AsientosDisponibles = asientoService.GenerarAsientosDisponibles(reservaciones);
+    context.reservasConAsientoOcupado =  asientoService.GenerarAsientosOcupados(reservaciones);
 
     var emailHandler = new CorreoHandler(resumenService);
     var mostrarReservasHandler = new MostrarReservasHandler(asientoService);

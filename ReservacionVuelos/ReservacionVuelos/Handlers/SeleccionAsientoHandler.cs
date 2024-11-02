@@ -39,13 +39,21 @@ namespace ReservacionVuelos.Handlers
                 
                 if (asientoService.EsAsientoValido(claseAsiento, fila, columna, context.AsientosDisponibles))
                 {
-                    var asientoSeleccionado = context.AsientosDisponibles
-                        .FirstOrDefault(asiento => asiento.CodigoAsiento == codigoAsiento && !asiento.Reservado);
+                    var vuelo = context.Reservaciones
+                        .FirstOrDefault(v => v.CodigoReserva == context.CodigoReserva);
 
-                    if (asientoSeleccionado == null)
+                    var asientosOcupados = context.reservasConAsientoOcupado
+                        .FirstOrDefault(ocupado => ocupado.AsientoSeleccionado.Reservado &&
+                                        ocupado.AsientoSeleccionado.CodigoAsiento.Equals(codigoAsiento) &&
+                                        ocupado.Vuelo.NumeroVuelo.Equals(vuelo?.Vuelo.NumeroVuelo));
+
+                    if (asientosOcupados != null)
                     {
-                        throw new Exception("El asiento ya está reservado o no existe en el sistema.");
+                        throw new Exception("El asiento ya está reservado.");
                     }
+
+                    var asientoSeleccionado = context.AsientosDisponibles
+                        .FirstOrDefault(asiento => asiento.CodigoAsiento == codigoAsiento);
 
                     asientoSeleccionado = builderService.ActualizarAsientoReservado(context.AsientoSeleccionado?.CodigoReserva??"", asientoSeleccionado);
 
@@ -57,7 +65,7 @@ namespace ReservacionVuelos.Handlers
                         throw new Exception("No puede seleccionar más de un asiento en el mismo vuelo.");
                     }
 
-                    if (reserva != null && !context.EsAsientoPermitidoParaClasePasajero(reserva.AsientoSeleccionado.Categoria, claseAsiento))
+                    if (reserva != null && !asientoService.EsAsientoPermitidoParaClasePasajero(reserva.AsientoSeleccionado.Categoria, claseAsiento))
                     {
                         throw new Exception($"La reserva con clase '{reserva.AsientoSeleccionado.Categoria}' no puede seleccionar asientos en la cabina '{claseAsiento}'.");
                     }

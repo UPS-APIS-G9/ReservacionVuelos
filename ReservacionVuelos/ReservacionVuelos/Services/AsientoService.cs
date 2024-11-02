@@ -19,8 +19,6 @@ namespace ReservacionVuelos.Services
 
             CrearAsientosPorClase(asientosDisponibles);
 
-            var asientosReservados = reservaciones.FindAll(reserva => reserva.AsientoSeleccionado.Reservado);
-
             return asientosDisponibles;
         }
 
@@ -54,7 +52,6 @@ namespace ReservacionVuelos.Services
             }
         };
 
-        //verificar esta funcion
         public bool EsAsientoValido(string clase, int fila, string columna, List<Asiento> asientosSeleccionados)
         {
             if (!Clases.ContainsKey(clase)) return false;
@@ -89,6 +86,26 @@ namespace ReservacionVuelos.Services
             {
                 return tiempoRestante.TotalHours >= 12;
             }
+        }
+        public bool EsAsientoPermitidoParaClasePasajero(string clasePasajero, string claseAsiento)
+        {
+            if (clasePasajero == "P")
+            {
+                return claseAsiento == "P" || claseAsiento == "Y";
+            }
+            else
+            {
+                return claseAsiento != "P";
+            }
+        }
+
+        public List<Reservacion> GenerarAsientosOcupados(List<Reservacion> reservaciones)
+        {
+            List<Reservacion> reservasConAsientoOcupado = new();
+
+            reservasConAsientoOcupado = reservaciones.FindAll(reserva => reserva.AsientoSeleccionado.Reservado);
+
+            return reservasConAsientoOcupado;
         }
     }
 

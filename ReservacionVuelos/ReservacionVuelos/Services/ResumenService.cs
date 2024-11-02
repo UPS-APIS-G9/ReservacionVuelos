@@ -1,10 +1,5 @@
 ﻿using ReservacionVuelos.Entities;
 using ReservacionVuelos.Utiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReservacionVuelos.Services
 {
@@ -33,7 +28,6 @@ namespace ReservacionVuelos.Services
                     }).ToList()
                 });
 
-            // Agrupar la salida por fecha
             var resumenAgrupadoPorFecha = resumen
                 .GroupBy(item => item.Fecha)
                 .Select(g => new

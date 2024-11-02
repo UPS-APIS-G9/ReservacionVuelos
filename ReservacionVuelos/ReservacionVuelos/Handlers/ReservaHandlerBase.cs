@@ -13,7 +13,7 @@ namespace ReservacionVuelos.Handlers
 
         public virtual void Handle(ReservaContext context)
         {
-            _nextHandler?.Handle(context); // Si hay un siguiente handler, se invoca
+            _nextHandler?.Handle(context);
         }
     }
 }

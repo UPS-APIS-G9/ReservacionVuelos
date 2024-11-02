@@ -45,6 +45,7 @@ namespace ReservacionVuelos.Handlers
 
             if (asientoSeleccionado != null)
             {
+                context.CodigoReserva = codigoReserva;
                 context.AsientoSeleccionado = asientoSeleccionado;
 
                 base.Handle(context);
