@@ -37,11 +37,6 @@ namespace ReservacionVuelos.Handlers
                 var verificarReserva = (context.Reservaciones?.FirstOrDefault(r => r.CodigoReserva == context.AsientoSeleccionado?.CodigoReserva)) ??
                     throw new Exception("Reserva no encontrada.");
                 
-                if (verificarReserva.AsientoSeleccionado.Categoria != claseAsiento)
-                {
-                    throw new Exception($"La clase del asiento seleccionado ({claseAsiento}) no coincide con la clase de la reserva ({verificarReserva.AsientoSeleccionado.Categoria}).");
-                }
-
                 if (asientoService.EsAsientoValido(claseAsiento, fila, columna, context.AsientosDisponibles))
                 {
                     var asientoSeleccionado = context.AsientosDisponibles
@@ -68,6 +63,7 @@ namespace ReservacionVuelos.Handlers
                     }
 
                     context.AsientoSeleccionado = asientoSeleccionado;
+
                     Console.WriteLine($"Asiento {codigoAsiento} seleccionado correctamente en la clase {claseAsiento}.");
                     base.Handle(context);
                 }

@@ -1,6 +1,7 @@
 ﻿using ReservacionVuelos.DTOs;
 using ReservacionVuelos.Entities;
 using ReservacionVuelos.Enums;
+using ReservacionVuelos.Utiles;
 
 namespace ReservacionVuelos.Services
 {
@@ -22,7 +23,7 @@ namespace ReservacionVuelos.Services
                 .SetAeropuertoOrigen(info.AeropuertoOrigen)
                 .SetAeropuertoDestino(info.AeropuertoDestino)
                 .SetAlcance(info.AlcanceVuelo.Equals("I") ? AlcanceVuelo.I : AlcanceVuelo.N)
-                .SetFechaHoraVuelo(info.FechaHoraVuelo)
+                .SetFechaHoraVuelo(info.FechaHoraVuelo.ToFormatedDateTime())
                 .Build();
 
         public Asiento CrearAsiento(ReservacionInfo info) =>
@@ -66,12 +67,5 @@ namespace ReservacionVuelos.Services
                 .SetReservado(reservado)
                 .Build();
 
-        public Reservacion CrearReservacion(Asiento asiento, Vuelo vuelo, Pasajero pasajero) =>
-            new Reservacion.ReservacionBuilder()
-                    .SetCodigoReserva(asiento.CodigoReserva)
-                    .SetAsientoSeleccionado(asiento)
-                    .SetVuelo(vuelo)
-                    .SetPasajero(pasajero)
-                    .Build();
     }
 }

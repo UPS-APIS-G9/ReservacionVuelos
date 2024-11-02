@@ -2,6 +2,7 @@
 using ReservacionVuelos.Entities;
 using ReservacionVuelos.Handlers;
 using ReservacionVuelos.Services;
+using ReservacionVuelos.Utiles;
 
 try
 {
@@ -30,6 +31,7 @@ try
             .SetAsientoSeleccionado(asiento)
             .SetVuelo(vuelo)
             .SetPasajero(pasajero)
+            .SetFechaReserva(reservacionInfo.FechaHoraVuelo.ToFormatedDateTime())
             .Build();
 
         reservaciones.Add(reservacion);

@@ -16,7 +16,7 @@ namespace ReservacionVuelos.DTOs
         public string AlcanceVuelo { get; }
         public string AeropuertoOrigen { get; }
         public string AeropuertoDestino { get; }
-        public DateTime FechaHoraVuelo { get; }
+        public string FechaHoraVuelo { get; }
 
         public ReservacionInfo(string linea)
         {
@@ -34,7 +34,7 @@ namespace ReservacionVuelos.DTOs
             AlcanceVuelo = partes[9];
             AeropuertoOrigen = partes[10];
             AeropuertoDestino = partes[11];
-            FechaHoraVuelo = partes[12].ToFormatedDateTime();
+            FechaHoraVuelo = partes[12];
         }
     }
 

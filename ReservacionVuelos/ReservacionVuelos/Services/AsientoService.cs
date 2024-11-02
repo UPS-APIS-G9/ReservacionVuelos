@@ -13,21 +13,13 @@ namespace ReservacionVuelos.Services
             BuilderService = builderService;
         }
 
-        public List<Asiento> GenerarAsientosDisponibles()
+        public List<Asiento> GenerarAsientosDisponibles(List<Reservacion> reservaciones)
         {
             List<Asiento> asientosDisponibles = new List<Asiento>();
 
             CrearAsientosPorClase(asientosDisponibles);
 
-            var asientosReservados = ObtenerAsientosReservados();
-
-            foreach (var asiento in asientosDisponibles)
-            {
-                if (asientosReservados.Contains(asiento.CodigoAsiento))
-                {
-                    this.BuilderService.CrearAsientoReservado(asiento);
-                }
-            }
+            var asientosReservados = reservaciones.FindAll(reserva => reserva.AsientoSeleccionado.Reservado);
 
             return asientosDisponibles;
         }
@@ -52,24 +44,6 @@ namespace ReservacionVuelos.Services
             }
         }
 
-        private HashSet<string> ObtenerAsientosReservados()
-        {
-            var asientosReservados = new HashSet<string>();
-            List<string> contenidoSeleccionAsientos = LeerArchivoService.Instance.GetcontenidoSeleccionAsiento();
-
-            foreach (var linea in contenidoSeleccionAsientos)
-            {
-                var datos = linea.Split('|');
-                if (datos.Length >= 2)
-                {
-                    var codigoAsiento = datos[1];
-                    asientosReservados.Add(codigoAsiento);
-                }
-            }
-
-            return asientosReservados;
-        }
-
         public readonly Dictionary<string, (int filaInicio, int filaFin, int maxAsientos, List<string> columnas)> Clases = new()
         {
             {
@@ -80,6 +54,7 @@ namespace ReservacionVuelos.Services
             }
         };
 
+        //verificar esta funcion
         public bool EsAsientoValido(string clase, int fila, string columna, List<Asiento> asientosSeleccionados)
         {
             if (!Clases.ContainsKey(clase)) return false;
