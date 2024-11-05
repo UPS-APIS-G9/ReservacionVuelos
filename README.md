@@ -16,12 +16,15 @@
 - Interface Segregation Principle  
 - Dependency Inversion Principle
 ```
-BuilderService builderService = new();
-AsientoService asientoService = new(builderService);
-ResumenService resumenService = new();
+IVueloService vueloService = new VueloService();
+IPasajeroService pasajeroService = new PasajeroService();
+IAsientoService asientoService = new AsientoService();
+IResumenService resumenService = new ResumenService();
 var emailHandler = new CorreoHandler(resumenService);
 var mostrarReservasHandler = new MostrarReservasHandler(asientoService);
-var seleccionAsientoHandler = new SeleccionAsientoHandler(builderService, asientoService);
+var seleccionAsientoHandler = new SeleccionAsientoHandler(asientoService);
+var validacionFechaHoraHandler = new ValidacionFechaHoraHandler();
+var guardarSeleccionHandler = new GuardarSeleccionHandler(resumenService);
 ```
 
 
