@@ -3,7 +3,7 @@ using ReservacionVuelos.Entities;
 
 namespace ReservacionVuelos.Services
 {
-    public class AsientoService
+    public class AsientoService : IAsientoService
     {
         
         private readonly BuilderService BuilderService;

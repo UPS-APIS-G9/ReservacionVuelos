@@ -15,7 +15,7 @@ try
     List<Reservacion> reservaciones = new();
     List<Asiento> asientosDisponibles = new();
     BuilderService builderService = new();
-    AsientoService asientoService = new(builderService);
+    IAsientoService asientoService = new AsientoService(builderService);
     ResumenService resumenService = new();
 
     foreach (var lineaReservacion in contenidoReservaciones)

@@ -8,9 +8,9 @@ namespace ReservacionVuelos.Handlers
     {
 
         private readonly BuilderService builderService;
-        private readonly AsientoService asientoService;
+        private readonly IAsientoService asientoService;
 
-        public SeleccionAsientoHandler(BuilderService builderService, AsientoService asientoService)
+        public SeleccionAsientoHandler(BuilderService builderService, IAsientoService asientoService)
         {
             this.builderService = builderService;
             this.asientoService = asientoService;

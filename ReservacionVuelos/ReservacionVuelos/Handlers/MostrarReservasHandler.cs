@@ -5,9 +5,9 @@ namespace ReservacionVuelos.Handlers
 {
     public class MostrarReservasHandler : ReservaHandlerBase
     {
-        private readonly AsientoService asientoService;
+        private readonly IAsientoService asientoService;
 
-        public MostrarReservasHandler(AsientoService asientoService)
+        public MostrarReservasHandler(IAsientoService asientoService)
         {
             this.asientoService = asientoService;
         }
