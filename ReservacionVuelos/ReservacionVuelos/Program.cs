@@ -16,7 +16,7 @@ try
     List<Asiento> asientosDisponibles = new();
     BuilderService builderService = new();
     IAsientoService asientoService = new AsientoService(builderService);
-    ResumenService resumenService = new();
+    IResumenService resumenService = new ResumenService();
 
     foreach (var lineaReservacion in contenidoReservaciones)
     {
@@ -71,7 +71,7 @@ try
     var mostrarReservasHandler = new MostrarReservasHandler(asientoService);
     var seleccionAsientoHandler = new SeleccionAsientoHandler(builderService, asientoService);
     var validacionFechaHoraHandler = new ValidacionFechaHoraHandler();
-    var guardarSeleccionHandler = new GuardarSeleccionHandler();
+    var guardarSeleccionHandler = new GuardarSeleccionHandler(resumenService);
 
     emailHandler.SetNext(mostrarReservasHandler);
     mostrarReservasHandler.SetNext(seleccionAsientoHandler);

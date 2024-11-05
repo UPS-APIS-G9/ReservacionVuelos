@@ -6,9 +6,9 @@ namespace ReservacionVuelos.Handlers
 {
     public class CorreoHandler : ReservaHandlerBase
     {
-        private readonly ResumenService _resumenService;
+        private readonly IResumenService _resumenService;
 
-        public CorreoHandler(ResumenService resumenService)
+        public CorreoHandler(IResumenService resumenService)
         {
             this._resumenService = resumenService;
         }

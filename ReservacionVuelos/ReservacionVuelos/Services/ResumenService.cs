@@ -3,7 +3,7 @@ using ReservacionVuelos.Utiles;
 
 namespace ReservacionVuelos.Services
 {
-    public class ResumenService
+    public class ResumenService : IResumenService
     {
         public void GenerarResumenPorFecha(List<Reservacion> reservaciones)
         {
