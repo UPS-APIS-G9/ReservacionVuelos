@@ -12,15 +12,12 @@ namespace ReservacionVuelos.Services
 {
     internal class PasajeroService : IPasajeroService
     {
+        public PasajeroService() {}
 
-        private IPasajeroBuilder _pasajeroBuilder;
-
-        public PasajeroService(IPasajeroBuilder pasajeroBuilder) {
-            _pasajeroBuilder = pasajeroBuilder;
-        }
-
-        public Pasajero CrearPasajero(ReservacionInfo info) =>
-            _pasajeroBuilder
+        public Pasajero CrearPasajero(ReservacionInfo info)
+        {
+            IPasajeroBuilder pasajeroBuilder = new PasajeroBuilder();
+            return pasajeroBuilder
                 .SetNombres(info.Nombres)
                 .SetApellidos(info.Apellidos)
                 .SetPaisEmision(info.PaisEmision)
@@ -28,6 +25,7 @@ namespace ReservacionVuelos.Services
                 .SetNumeroIdentificacion(info.NumeroIdentificacion)
                 .SetTipoIdentificacion(info.TipoIdentificacion.Equals("PAS") ? TipoIdentificacion.PAS : TipoIdentificacion.NAC)
                 .Build();
+        }
 
     }
 }

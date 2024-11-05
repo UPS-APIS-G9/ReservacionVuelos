@@ -13,21 +13,18 @@ namespace ReservacionVuelos.Services
 {
     public class VueloService : IVueloService
     {
+        public VueloService() {}
 
-        private IVueloBuilder _vueloBuilder;
-
-        public VueloService(IVueloBuilder vueloBuilder)
+        public Vuelo CrearVuelo(ReservacionInfo info)
         {
-            _vueloBuilder = vueloBuilder;
-        }
-
-        public Vuelo CrearVuelo(ReservacionInfo info) =>
-            _vueloBuilder
+            IVueloBuilder vueloBuilder = new VueloBuilder();
+            return vueloBuilder
                 .SetNumeroVuelo(info.NumeroVuelo)
                 .SetAeropuertoOrigen(info.AeropuertoOrigen)
                 .SetAeropuertoDestino(info.AeropuertoDestino)
                 .SetAlcance(info.AlcanceVuelo.Equals("I") ? AlcanceVuelo.I : AlcanceVuelo.N)
                 .SetFechaHoraVuelo(info.FechaHoraVuelo.ToFormatedDateTime())
                 .Build();
+        }
     }
 }

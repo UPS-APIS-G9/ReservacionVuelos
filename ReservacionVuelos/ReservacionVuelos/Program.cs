@@ -10,19 +10,16 @@ try
     LeerArchivoService.Instance.InitializeFileReservations("Files/reservations.txt");
     LeerArchivoService.Instance.InitializeFileSeatSelection("Files/seat-selection.txt");
 
-    IAsientoBuilder AsientoBuilder = new AsientoBuilder();
-    IPasajeroBuilder PasajeroBuilder = new PasajeroBuilder();
-    IVueloBuilder VueloBuilder = new VueloBuilder();
+    List<Reservacion> reservaciones = new();
+    List<Asiento> asientosDisponibles = new();
 
-    IVueloService vueloService = new VueloService(VueloBuilder);
-    IPasajeroService pasajeroService = new PasajeroService(PasajeroBuilder);
-    IAsientoService asientoService = new AsientoService(AsientoBuilder);
+    IVueloService vueloService = new VueloService();
+    IPasajeroService pasajeroService = new PasajeroService();
+    IAsientoService asientoService = new AsientoService();
     IResumenService resumenService = new ResumenService();
 
     List<string> contenidoReservaciones = LeerArchivoService.Instance.GetcontenidoReservaciones();
     List<string> contenidoSeleccionAsientos = LeerArchivoService.Instance.GetcontenidoSeleccionAsiento();
-    List<Reservacion> reservaciones = new();
-    List<Asiento> asientosDisponibles = new();
 
     foreach (var lineaReservacion in contenidoReservaciones)
     {

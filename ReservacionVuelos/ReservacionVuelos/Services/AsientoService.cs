@@ -7,12 +7,7 @@ namespace ReservacionVuelos.Services
     public class AsientoService : IAsientoService
     {
 
-        private readonly IAsientoBuilder _asientoBuilder;
-
-        public AsientoService(IAsientoBuilder asientoBuilder)
-        {
-            _asientoBuilder = asientoBuilder;
-        }
+        public AsientoService() {}
 
         public List<Asiento> GenerarAsientosDisponibles(List<Reservacion> reservaciones)
         {
@@ -109,29 +104,40 @@ namespace ReservacionVuelos.Services
             return reservasConAsientoOcupado;
         }
 
-        private Asiento CrearAsiento(string codigoAsiento, string categoria, bool esVentana, bool esPasillo) =>
-            _asientoBuilder
+        private Asiento CrearAsiento(string codigoAsiento, string categoria, bool esVentana, bool esPasillo)
+        {
+            IAsientoBuilder asientoBuilder = new AsientoBuilder();
+            return asientoBuilder
                 .SetCodigoAsiento(codigoAsiento)
                 .SetCategoria(categoria)
                 .SetEsVentana(esVentana)
                 .SetEsPasillo(esPasillo)
                 .Build();
+        }
 
-        public Asiento CrearAsiento(ReservacionInfo info) =>
-            _asientoBuilder.SetCodigoReserva(info.CodigoReserva)
+        public Asiento CrearAsiento(ReservacionInfo info)
+        {
+            IAsientoBuilder asientoBuilder = new AsientoBuilder();
+            return asientoBuilder.SetCodigoReserva(info.CodigoReserva)
                 .SetCategoria(info.CategoriaAsiento)
                 .Build();
+        }
 
-        public Asiento ActualizarAsiento(Reservacion info, string codigoAsiento, bool reservado) =>
-            _asientoBuilder
+        public Asiento ActualizarAsiento(Reservacion info, string codigoAsiento, bool reservado)
+        {
+            IAsientoBuilder asientoBuilder = new AsientoBuilder();
+            return asientoBuilder
                 .SetCodigoReserva(info.CodigoReserva)
                 .SetCodigoAsiento(codigoAsiento)
                 .SetCategoria(info.AsientoSeleccionado.Categoria)
                 .SetReservado(reservado)
                 .Build();
+        }
 
-        public Asiento ActualizarAsientoReservado(string codigoReserva, Asiento asiento) =>
-            _asientoBuilder
+        public Asiento ActualizarAsientoReservado(string codigoReserva, Asiento asiento)
+        {
+            IAsientoBuilder asientoBuilder = new AsientoBuilder();
+            return asientoBuilder
                 .SetCodigoAsiento(asiento.CodigoAsiento)
                 .SetCodigoReserva(codigoReserva)
                 .SetCategoria(asiento.Categoria)
@@ -139,9 +145,8 @@ namespace ReservacionVuelos.Services
                 .SetEsPasillo(asiento.EsPasillo)
                 .SetReservado(true)
                 .Build();
+        }
 
     }
-
-
 
 }
