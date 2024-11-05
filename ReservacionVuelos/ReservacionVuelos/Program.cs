@@ -75,7 +75,7 @@ try
 
     var emailHandler = new CorreoHandler(resumenService);
     var mostrarReservasHandler = new MostrarReservasHandler(asientoService);
-    var seleccionAsientoHandler = new SeleccionAsientoHandler(AsientoBuilder, asientoService);
+    var seleccionAsientoHandler = new SeleccionAsientoHandler(asientoService);
     var validacionFechaHoraHandler = new ValidacionFechaHoraHandler();
     var guardarSeleccionHandler = new GuardarSeleccionHandler(resumenService);
 

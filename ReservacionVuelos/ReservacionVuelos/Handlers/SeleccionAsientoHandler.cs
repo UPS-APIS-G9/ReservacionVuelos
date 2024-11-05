@@ -9,12 +9,10 @@ namespace ReservacionVuelos.Handlers
     public class SeleccionAsientoHandler : ReservaHandlerBase
     {
 
-        private readonly IAsientoBuilder _asientoBuilder;
         private readonly IAsientoService _asientoService;
 
-        public SeleccionAsientoHandler(IAsientoBuilder asientoBuilder, IAsientoService asientoService)
+        public SeleccionAsientoHandler(IAsientoService asientoService)
         {
-            _asientoBuilder = asientoBuilder;
             _asientoService = asientoService;
         }
 
@@ -57,7 +55,7 @@ namespace ReservacionVuelos.Handlers
                     var asientoSeleccionado = context.AsientosDisponibles
                         .FirstOrDefault(asiento => asiento.CodigoAsiento == codigoAsiento);
 
-                    asientoSeleccionado = this.ActualizarAsientoReservado(context.AsientoSeleccionado?.CodigoReserva??"", asientoSeleccionado);
+                    asientoSeleccionado = _asientoService.ActualizarAsientoReservado(context.AsientoSeleccionado?.CodigoReserva??"", asientoSeleccionado);
 
                     var reserva = context.Reservaciones
                         .FirstOrDefault(r => r.CodigoReserva == context.AsientoSeleccionado?.CodigoReserva);
@@ -86,17 +84,7 @@ namespace ReservacionVuelos.Handlers
             {
                 throw new Exception("Ya posee una reserva activa.");
             }
-        }
-
-        private Asiento ActualizarAsientoReservado(string codigoReserva, Asiento asiento) =>
-            _asientoBuilder
-                .SetCodigoAsiento(asiento.CodigoAsiento)
-                .SetCodigoReserva(codigoReserva)
-                .SetCategoria(asiento.Categoria)
-                .SetEsVentana(asiento.EsVentana)
-                .SetEsPasillo(asiento.EsPasillo)
-                .SetReservado(true)
-                .Build();
+        }        
 
     }
 

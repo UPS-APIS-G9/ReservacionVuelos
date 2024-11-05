@@ -18,6 +18,7 @@ namespace ReservacionVuelos.Services
         bool EsAsientoPermitidoParaClasePasajero(string clasePasajero, string claseAsiento);
         Asiento CrearAsiento(ReservacionInfo info);
         Asiento ActualizarAsiento(Reservacion info, string codigoAsiento, bool reservado);
+        Asiento ActualizarAsientoReservado(string codigoReserva, Asiento asiento);
 
     }
 }
