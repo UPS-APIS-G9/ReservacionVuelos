@@ -1,16 +1,17 @@
-﻿using ReservacionVuelos.DTOs;
+﻿using ReservacionVuelos.Builders;
+using ReservacionVuelos.DTOs;
 using ReservacionVuelos.Entities;
 
 namespace ReservacionVuelos.Services
 {
     public class AsientoService : IAsientoService
     {
-        
-        private readonly BuilderService BuilderService;
 
-        public AsientoService(BuilderService builderService)
+        private readonly IAsientoBuilder _asientoBuilder;
+
+        public AsientoService(IAsientoBuilder asientoBuilder)
         {
-            BuilderService = builderService;
+            _asientoBuilder = asientoBuilder;
         }
 
         public List<Asiento> GenerarAsientosDisponibles(List<Reservacion> reservaciones)
@@ -27,22 +28,22 @@ namespace ReservacionVuelos.Services
 
             for (int fila = 1; fila <= 3; fila++)
             {
-                asientosDisponibles.Add(BuilderService.CrearAsiento("A" + fila, "P", true, false));
-                asientosDisponibles.Add(BuilderService.CrearAsiento("B" + fila, "P", false, true));
-                asientosDisponibles.Add(BuilderService.CrearAsiento("E" + fila, "P", false, true));
-                asientosDisponibles.Add(BuilderService.CrearAsiento("F" + fila, "P", true, false));
+                asientosDisponibles.Add(this.CrearAsiento("A" + fila, "P", true, false));
+                asientosDisponibles.Add(this.CrearAsiento("B" + fila, "P", false, true));
+                asientosDisponibles.Add(this.CrearAsiento("E" + fila, "P", false, true));
+                asientosDisponibles.Add(this.CrearAsiento("F" + fila, "P", true, false));
             }
 
             for (int fila = 4; fila <= 27; fila++)
             {
                 for (char columna = 'A'; columna <= 'F'; columna++)
                 {
-                    asientosDisponibles.Add(BuilderService.CrearAsiento($"{columna}{fila}", "Y", columna == 'A' || columna == 'F', columna == 'B' || columna == 'E'));
+                    asientosDisponibles.Add(this.CrearAsiento($"{columna}{fila}", "Y", columna == 'A' || columna == 'F', columna == 'B' || columna == 'E'));
                 }
             }
         }
 
-        public readonly Dictionary<string, (int filaInicio, int filaFin, int maxAsientos, List<string> columnas)> Clases = new()
+        private readonly Dictionary<string, (int filaInicio, int filaFin, int maxAsientos, List<string> columnas)> Clases = new()
         {
             {
                 "P", (1, 3, 12, new List<string> { "A", "B", "E", "F" })
@@ -107,6 +108,30 @@ namespace ReservacionVuelos.Services
 
             return reservasConAsientoOcupado;
         }
+
+        private Asiento CrearAsiento(string codigoAsiento, string categoria, bool esVentana, bool esPasillo) =>
+            _asientoBuilder
+                .SetCodigoAsiento(codigoAsiento)
+                .SetCategoria(categoria)
+                .SetEsVentana(esVentana)
+                .SetEsPasillo(esPasillo)
+                .Build();
+
+        public Asiento CrearAsiento(ReservacionInfo info) =>
+            _asientoBuilder.SetCodigoReserva(info.CodigoReserva)
+                .SetCategoria(info.CategoriaAsiento)
+                .Build();
+
+        public Asiento ActualizarAsiento(Reservacion info, string codigoAsiento, bool reservado) =>
+            _asientoBuilder
+                .SetCodigoReserva(info.CodigoReserva)
+                .SetCodigoAsiento(codigoAsiento)
+                .SetCategoria(info.AsientoSeleccionado.Categoria)
+                .SetReservado(reservado)
+                .Build();
+
     }
+
+
 
 }

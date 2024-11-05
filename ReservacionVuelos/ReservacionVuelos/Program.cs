@@ -1,4 +1,5 @@
-﻿using ReservacionVuelos.DTOs;
+﻿using ReservacionVuelos.Builders;
+using ReservacionVuelos.DTOs;
 using ReservacionVuelos.Entities;
 using ReservacionVuelos.Handlers;
 using ReservacionVuelos.Services;
@@ -9,22 +10,27 @@ try
     LeerArchivoService.Instance.InitializeFileReservations("Files/reservations.txt");
     LeerArchivoService.Instance.InitializeFileSeatSelection("Files/seat-selection.txt");
 
+    IAsientoBuilder AsientoBuilder = new AsientoBuilder();
+    IPasajeroBuilder PasajeroBuilder = new PasajeroBuilder();
+    IVueloBuilder VueloBuilder = new VueloBuilder();
+
+    IVueloService vueloService = new VueloService(VueloBuilder);
+    IPasajeroService pasajeroService = new PasajeroService(PasajeroBuilder);
+    IAsientoService asientoService = new AsientoService(AsientoBuilder);
+    IResumenService resumenService = new ResumenService();
+
     List<string> contenidoReservaciones = LeerArchivoService.Instance.GetcontenidoReservaciones();
     List<string> contenidoSeleccionAsientos = LeerArchivoService.Instance.GetcontenidoSeleccionAsiento();
-
     List<Reservacion> reservaciones = new();
     List<Asiento> asientosDisponibles = new();
-    BuilderService builderService = new();
-    IAsientoService asientoService = new AsientoService(builderService);
-    IResumenService resumenService = new ResumenService();
 
     foreach (var lineaReservacion in contenidoReservaciones)
     {
         var reservacionInfo = new ReservacionInfo(lineaReservacion);
 
-        Pasajero pasajero = builderService.CrearPasajero(reservacionInfo);
-        Vuelo vuelo = builderService.CrearVuelo(reservacionInfo);
-        Asiento asiento = builderService.CrearAsiento(reservacionInfo);
+        Pasajero pasajero = pasajeroService.CrearPasajero(reservacionInfo);
+        Vuelo vuelo = vueloService.CrearVuelo(reservacionInfo);
+        Asiento asiento = asientoService.CrearAsiento(reservacionInfo);
 
         Reservacion reservacion = new Reservacion.ReservacionBuilder()
             .SetCodigoReserva(reservacionInfo.CodigoReserva)
@@ -45,7 +51,7 @@ try
 
         if (reservacion != null && reservacion.AsientoSeleccionado != null)
         {
-            Asiento asientoActualizado = builderService.ActualizarAsiento(reservacion, asientoReservaInfo.CodigoAsiento, true);
+            Asiento asientoActualizado = asientoService.ActualizarAsiento(reservacion, asientoReservaInfo.CodigoAsiento, true);
 
             Reservacion reservacionActualizada = new Reservacion.ReservacionBuilder()
                 .SetCodigoReserva(reservacion.CodigoReserva)
@@ -69,7 +75,7 @@ try
 
     var emailHandler = new CorreoHandler(resumenService);
     var mostrarReservasHandler = new MostrarReservasHandler(asientoService);
-    var seleccionAsientoHandler = new SeleccionAsientoHandler(builderService, asientoService);
+    var seleccionAsientoHandler = new SeleccionAsientoHandler(AsientoBuilder, asientoService);
     var validacionFechaHoraHandler = new ValidacionFechaHoraHandler();
     var guardarSeleccionHandler = new GuardarSeleccionHandler(resumenService);
 

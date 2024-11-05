@@ -1,4 +1,5 @@
-﻿using ReservacionVuelos.Entities;
+﻿using ReservacionVuelos.DTOs;
+using ReservacionVuelos.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace ReservacionVuelos.Services
         string ObtenerClasePorFila(int fila);
         bool EsAsientoValido(string clase, int fila, string columna, List<Asiento> asientosSeleccionados);
         bool EsAsientoPermitidoParaClasePasajero(string clasePasajero, string claseAsiento);
+        Asiento CrearAsiento(ReservacionInfo info);
+        Asiento ActualizarAsiento(Reservacion info, string codigoAsiento, bool reservado);
 
     }
 }
