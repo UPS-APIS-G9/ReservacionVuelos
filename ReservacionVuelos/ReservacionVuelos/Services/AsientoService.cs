@@ -1,6 +1,7 @@
 ﻿using ReservacionVuelos.Builders;
 using ReservacionVuelos.DTOs;
 using ReservacionVuelos.Entities;
+using ReservacionVuelos.Utiles;
 using ReservacionVuelos.Validations;
 
 namespace ReservacionVuelos.Services
@@ -77,11 +78,11 @@ namespace ReservacionVuelos.Services
 
             if (esNacional)
             {
-                return tiempoRestante.TotalHours >= 6;
+                return tiempoRestante.TotalHours >= Constantes.HorasAntesVueloNacional;
             }
             else
             {
-                return tiempoRestante.TotalHours >= 12;
+                return tiempoRestante.TotalHours >= Constantes.HorasAntesVueloInternancional;
             }
         }
         public bool EsAsientoPermitidoParaClasePasajero(string clasePasajero, string claseAsiento)

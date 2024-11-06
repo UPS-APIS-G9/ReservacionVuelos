@@ -1,21 +1,55 @@
-﻿namespace ReservacionVuelos.Tests
+﻿using ReservacionVuelos.Services;
+using ReservacionVuelos.Utiles;
+using System.Globalization;
+
+namespace ReservacionVuelos.Tests
 {
     public class AsientoServiceTest
     {
+
+        IAsientoService service;
+
         [Theory]
-        [InlineData(3, 5, 8)]
-        [InlineData(3, 0, 3)]
-        //[InlineData(4, 5, 8)] //Error
-        public void Test_Add_Theory(int numberOne, int numberTwo, int expected)
+        [InlineData("2024-01-01 00:00:00", true)]
+        [InlineData("2024-01-01 00:00:00", false)]
+        public void givenFechaDeVueloPasada_when_PuedeSeleccionarAsiento_thenReturnFalse(string date, bool esNacional)
         {
-            // Arrange
-            MathOperations math = new MathOperations();
+            service = new AsientoService();
+            DateTime fechaHoraVuelo = DateTime.ParseExact(date, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
 
-            // Act
-            int result = math.Add(numberOne, numberTwo);
+            var puedeSeleccionarAssiento = service.PuedeSeleccionarAsiento(fechaHoraVuelo, esNacional);
 
-            // Assert
-            Assert.Equal(expected, result);
+            Assert.False(puedeSeleccionarAssiento);
+
         }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void givenFechaDeVueloHoraActual_when_PuedeSeleccionarAsiento_thenReturnFalse(bool esNacional)
+        {
+            service = new AsientoService();
+            DateTime localDate = DateTime.Now;
+
+            var puedeSeleccionarAssiento = service.PuedeSeleccionarAsiento(localDate, esNacional);
+
+            Assert.False(puedeSeleccionarAssiento);
+
+        }
+
+        [Theory]
+        [InlineData(Constantes.HorasAntesVueloNacional, true)]
+        [InlineData(Constantes.HorasAntesVueloInternancional, false)]
+        public void givenFechaDeVueloDentroRangoPermitido_when_PuedeSeleccionarAsiento_thenReturnTrue(int horasAntesVuelo, bool esNacional)
+        {
+            service = new AsientoService();
+            DateTime localDate = DateTime.Now;
+
+            var puedeSeleccionarAssiento = service.PuedeSeleccionarAsiento(localDate.AddHours(horasAntesVuelo).AddSeconds(1), esNacional);
+
+            Assert.True(puedeSeleccionarAssiento);
+
+        }
+
     }
 }
