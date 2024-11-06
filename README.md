@@ -13,7 +13,11 @@
 - Single Responsibility Principle
 - Open-Closed Principle
 - Liskov Substitution Principle
-- Interface Segregation Principle  
+- Interface Segregation Principle
+```
+public interface IAsientoService : IAsientoValidations
+public class AsientoService : IAsientoService, IAsientoValidations
+```
 - Dependency Inversion Principle
 ```
 IVueloService vueloService = new VueloService();
