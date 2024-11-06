@@ -1,10 +1,11 @@
 ﻿using ReservacionVuelos.Builders;
 using ReservacionVuelos.DTOs;
 using ReservacionVuelos.Entities;
+using ReservacionVuelos.Validations;
 
 namespace ReservacionVuelos.Services
 {
-    public class AsientoService : IAsientoService
+    public class AsientoService : IAsientoService, IAsientoValidations
     {
 
         public AsientoService() {}
