@@ -2,7 +2,7 @@
 {
     public static class DateTimeUtils
     {
-        public static DateTime ToFormatedDateTime(this string manualDateTime, string format = "yyyy-MM-dd HH:mm:ss")
+        public static DateTime ToFormatedDateTime(this string manualDateTime, string format = Constantes.FormatoFecha)
         {
             if (DateTime.TryParseExact(manualDateTime, format,
                 null, System.Globalization.DateTimeStyles.None, out DateTime dateTime))
@@ -15,10 +15,10 @@
 
         public static DateTime ToFormatedDateTime(this DateTime now)
         {
-            if (!DateTime.TryParseExact(now.ToString("yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss",
+            if (!DateTime.TryParseExact(now.ToString(Constantes.FormatoFecha), Constantes.FormatoFecha,
                 null, System.Globalization.DateTimeStyles.None, out DateTime dateTime))
             {
-                throw new Exception("Formato de fecha y hora no válido. Debe ser YYYY-MM-DD HH:MM:ss.");
+                throw new Exception($"Formato de fecha y hora no válido. Debe ser {Constantes.FormatoFecha}.");
             }
 
             return dateTime;
@@ -26,7 +26,7 @@
 
         public static string ToFormatedStringDateTime(this DateTime now)
         {
-            return now.ToString("yyyy-MM-dd HH:mm:ss");
+            return now.ToString(Constantes.FormatoFecha);
         }
     }
 }

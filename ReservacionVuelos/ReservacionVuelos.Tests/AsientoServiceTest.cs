@@ -15,7 +15,7 @@ namespace ReservacionVuelos.Tests
         public void givenFechaDeVueloPasada_when_PuedeSeleccionarAsiento_thenReturnFalse(string date, bool esNacional)
         {
             service = new AsientoService();
-            DateTime fechaHoraVuelo = DateTime.ParseExact(date, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+            DateTime fechaHoraVuelo = DateTime.ParseExact(date, Constantes.FormatoFecha, CultureInfo.InvariantCulture);
 
             var puedeSeleccionarAssiento = service.PuedeSeleccionarAsiento(fechaHoraVuelo, esNacional);
 
