@@ -5,9 +5,9 @@
 - Guido Guerrero
 
 ### 1. Patrones implementados
-- Singleton
-- Builder
-- Chain of responsability
+- Singleton: Este patrón se utiliza para la carga de archivosen memoria, ya que no es necesario leer el archivo cada vez que se requiera leer su contenido. 
+- Builder: Se utiliza para crear los objetos luego de leer el contenido de cada archivo. De acuerdo a la información obtenida se crea los objetos.
+- Chain of responsability: Se utiliza para seguir una secuencia de validaciones, pasando la responsabilidad al siguiente handler cuando la validación del anterior fue correcta.
 
 ### 2. Bloques pequeños de código mostrando evidencia de uso de principios SOLID
 - Single Responsibility Principle
