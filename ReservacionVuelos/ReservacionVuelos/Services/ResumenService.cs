@@ -50,7 +50,7 @@ namespace ReservacionVuelos.Services
             }
         }
 
-        public void GenerarResumenPorUsuario(List<Reservacion> reservaciones, string email, string codigoAsiento)
+        public void GenerarResumenPorUsuario(List<Reservacion> reservaciones, string email, Asiento AsientoSeleccionado)
         {
             var resumen = reservaciones
                 .Where(u => u.Pasajero.Correo.Equals(email))
@@ -61,7 +61,7 @@ namespace ReservacionVuelos.Services
                     Reservas = g.Select(r => new
                     {
                         r.CodigoReserva,
-                        Asiento = string.IsNullOrEmpty(codigoAsiento) ? "No seleccionado" : codigoAsiento,
+                        Asiento = string.IsNullOrEmpty(AsientoSeleccionado.CodigoAsiento) || !AsientoSeleccionado.CodigoReserva.Equals(r.CodigoReserva) ? "No seleccionado" : AsientoSeleccionado.CodigoAsiento,
                         Vuelo = r.Vuelo.NumeroVuelo,
                         Origen = r.Vuelo.AeropuertoOrigen,
                         Destino = r.Vuelo.AeropuertoDestino,
