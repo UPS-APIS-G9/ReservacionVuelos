@@ -33,7 +33,7 @@ var guardarSeleccionHandler = new GuardarSeleccionHandler(resumenService);
 
 
 ### 3. Cómo ejecutar el código en ambiente local
-1. Para ejecutar el aplicativo, es necesario tener instalado VS 2022, en cualquiera de sus distribuciones (Community, Proffesional, Enterprise).
+1. Para ejecutar el aplicativo, es necesario tener instalado VS 2022, en cualquiera de sus distribuciones (Community, Proffesional, Enterprise). En caso de tener una version anterior, es necesario instalar el framework .Net8.
 2. Localizar la ubicación del archivo "ReservacionVuelos.sln" y abrirlo con Visual Studio.
 3. Una vez cargado el proyecto y sus dependencias (las dependencias se descargarán automáticamente), presionar F5 en el teclado o click en el botón "ReservacionVuelos".
 4. Los cambios en el archivo seat-selection.txt son permanentes y no desaparecerán en cada ejecución.
